@@ -1,0 +1,311 @@
+openapi: 3.0.0
+info:
+  title: Your API Title
+  version: 1.0.0
+  description: Your API Description
+servers:
+  - url: http://localhost:7700  # Update with your server URL
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        categoryName:
+          type: string
+        listoffood:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+    Food:
+      type: object
+      properties:
+        title:
+          type: string
+        image:
+          type: string
+        categoryName:
+          type: string
+        description:
+          type: string
+
+tags:
+  - name: Food
+    description: Operations related to food items
+
+
+tags:
+  - name: Categories
+    description: Operations related to categories
+
+paths:
+  /category/createCategory:
+    post:
+      summary: Create a new category
+      tags:
+        - Categories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '201':
+          description: Category created successfully
+          content:
+            application/json:
+              example:
+                message: Category created successfully
+                data: {}
+        '500':
+          description: Internal Server Error
+
+  /category/deleteCategory/{categoryId}:
+    delete:
+      summary: Delete a category and associated food items
+      tags:
+        - Categories
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          description: ID of the category to delete
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Category and associated food items deleted successfully
+          content:
+            application/json:
+              example:
+                message: Category and associated food items deleted successfully
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              example:
+                message: Category not found
+        '500':
+          description: Internal Server Error
+
+  /category/updateCategory/{categoryId}:
+    put:
+      summary: Update a category and associated food items
+      tags:
+        - Categories
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          description: ID of the category to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Category and associated food items updated successfully
+          content:
+            application/json:
+              example:
+                message: Category and associated food items updated successfully
+                data: {}
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              example:
+                message: Category not found
+        '500':
+          description: Internal Server Error
+
+  /category/getAllCategories:
+    get:
+      summary: Get a list of all categories
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              example:
+                message: List of categories
+                data: []
+        '500':
+          description: Internal Server Error
+  /food/createfood/{categoryId}:
+    post:
+      summary: Create a new food item with file upload
+      tags:
+        - Food
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          description: ID of the category for the food item
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                image:
+                  type: string
+                  format: binary  # Indicates a file upload (image)
+                categoryName:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '201':
+          description: Food item created successfully
+          content:
+            application/json:
+              example:
+                message: Food item created successfully
+                data: {}
+        '500':
+          description: Internal Server Error
+
+  /food/foodForCategory/{categoryId}:
+    get:
+      summary: Get a list of food items for a specific category
+      tags:
+        - Food
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          description: ID of the category to retrieve food items
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Food items for the category retrieved successfully
+          content:
+            application/json:
+              example:
+                message: Food items for the category retrieved successfully
+                data: []
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              example:
+                message: Category not found
+        '500':
+          description: Internal Server Error
+
+  /food/deletefood/{foodId}:
+    delete:
+      summary: Delete a food item
+      tags:
+        - Food
+      parameters:
+        - in: path
+          name: foodId
+          required: true
+          description: ID of the food item to delete
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Food item deleted successfully
+          content:
+            application/json:
+              example:
+                message: Food item deleted successfully
+        '404':
+          description: Food item not found
+          content:
+            application/json:
+              example:
+                message: Food item not found
+        '500':
+          description: Internal Server Error
+
+  /food/updatefood/{foodId}:
+    put:
+      summary: Update a food item with file upload
+      tags:
+        - Food
+      parameters:
+        - in: path
+          name: foodId
+          required: true
+          description: ID of the food item to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                image:
+                  type: string
+                  format: binary  # Indicates a file upload (image)
+                categoryName:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Food item updated successfully
+          content:
+            application/json:
+              example:
+                message: Food item updated successfully
+                data: {}
+        '404':
+          description: Food item not found
+          content:
+            application/json:
+              example:
+                message: Food item not found
+        '500':
+          description: Internal Server Error
+
+  /food/deleteAllFoodForCategory/{categoryId}:
+    delete:
+      summary: Delete all food items for a specific category
+      tags:
+        - Food
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          description: ID of the category to delete all food items
+          schema:
+            type: string
+      responses:
+        '200':
+          description: All food items for the category deleted successfully
+          content:
+            application/json:
+              example:
+                message: All food items for the category deleted successfully
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              example:
+                message: Category not found
+        '500':
+          description: Internal Server Error
