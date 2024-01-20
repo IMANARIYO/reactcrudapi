@@ -126,3 +126,23 @@ export const getAllFood = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+export const deletefood = async (req, res) => {
+  try {
+    const foodId = req.params.foodId;
+
+    // Check if the food item exists
+    const existingFood = await food.findById(foodId);
+    if (!existingFood) {
+      return res.status(404).json({ message: 'Food item not found' });
+    }
+
+    // Delete the food item from the database
+    await food.findByIdAndDelete(foodId);
+
+    res.status(200).json({ message: 'Food item deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
