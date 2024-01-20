@@ -88,3 +88,24 @@ export const getAllCategories = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' })
   }
 }
+// Delete All Categories
+export const deleteAllCategories = async (req, res) => {
+  try {
+    // Get all categories
+    const allCategories = await category.find();
+
+    // Loop through each category
+    for (const categoryItem of allCategories) {
+      // Delete associated food items
+      await food.deleteMany({ categoryName: categoryItem.categoryName });
+
+      // Delete the category
+      await category.findByIdAndDelete(categoryItem._id);
+    }
+
+    res.status(200).json({ message: 'All categories and associated food items deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};

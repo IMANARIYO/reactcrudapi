@@ -141,18 +141,43 @@ paths:
                 data: []
         '500':
           description: Internal Server Error
-  /food/createfood/{categoryId}:
+  /category/deleteAllCategories:
+    delete:
+      summary: Delete all categories and their associated food items
+      tags:
+        - Category
+      responses:
+        '200':
+          description: All categories and associated food items deleted successfully
+          content:
+            application/json:
+              example:
+                message: All categories and associated food items deleted successfully
+        '500':
+          description: Internal Server Error
+        
+  /food/getAll:
+    get:
+      summary: Get a list of all food items
+      tags:
+        - Food
+      responses:
+        '200':
+          description: List of all food items retrieved successfully
+          content:
+            application/json:
+              example:
+                message: List of all food items retrieved successfully
+                data: []
+        '500':
+          description: Internal Server Error
+        
+  /food/createfood:
     post:
       summary: Create a new food item with file upload
       tags:
         - Food
-      parameters:
-        - in: path
-          name: categoryId
-          required: true
-          description: ID of the category for the food item
-          schema:
-            type: string
+    
       requestBody:
         required: true
         content:
