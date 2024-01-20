@@ -26,7 +26,7 @@ console.log(newFood)
       .json({ message: 'Food item created successfully', data: newFood })
   } catch (error) {
     console.error(error)
-    res.status(500).json({ message: 'Internal Server Error' })
+    res.status(500).json({ message: 'Internal Server Error' ,error})
   }
 }
 
